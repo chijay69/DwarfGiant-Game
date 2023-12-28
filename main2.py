@@ -579,7 +579,6 @@ def create_pairs(start, end, employee_list, result_queue):
 
 
 def run():
-    # Assuming 'unique_employee_list' is already defined
 
     num_processes = multiprocessing.cpu_count()
     chunk_size = len(unique_employee_list) // num_processes
