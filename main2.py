@@ -576,9 +576,8 @@ def create_pairs(start, end, employee_list, result_queue):
 
 
 def run():
-
     num_processes = multiprocessing.cpu_count()
-    chunk_size = len(unique_employee_list) // num_processes
+    chunk_size = len(unique_employee_list)  # num_processes
 
     processes = []
     result_queue = multiprocessing.Queue()
@@ -597,7 +596,6 @@ def run():
     while not result_queue.empty():
         employee_pairs.extend(result_queue.get())
 
-    # print(employee_pairs)
     return employee_pairs
 
 
