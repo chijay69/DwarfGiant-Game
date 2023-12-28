@@ -548,9 +548,6 @@ for employee in employees:
 # make a list of unique employees
 unique_employee_list = list(unique_employees.values())
 
-# print(unique_employee_list)
-# print(unique_employees)
-
 # get the length of unique values
 total_employees = len(unique_employee_list)
 
@@ -600,7 +597,8 @@ def run():
     while not result_queue.empty():
         employee_pairs.extend(result_queue.get())
 
-    print(employee_pairs)
+    # print(employee_pairs)
+    return employee_pairs
 
 
 if __name__ == "__main__":
