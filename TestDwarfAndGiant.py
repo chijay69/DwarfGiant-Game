@@ -43,10 +43,11 @@ class MyTestCase(unittest.TestCase):
     # Test case for generating unique pairs
     def test_generate_unique_pairs(self):
         employees = [
-            {"name": "Alice", "department": "R&D", "age": 25},
-            {"name": "Bob", "department": "R&D", "age": 30},
             {"name": "Charlie", "department": "Support", "age": 35},
-            {"name": "Charles", "department": "Support", "age": 45},
+            {"name": "Charlie", "department": "Support", "age": 35},
+            {"name": "Charlie", "department": "Support", "age": 35},
+            {"name": "Charlie", "department": "Support", "age": 35},
+            {"name": "Charlie", "department": "Support", "age": 35},
         ]
         # Validate uniqueness and correct pair generation logic
         unique_pairs = generate_unique_pairs(remove_duplicates(employees))

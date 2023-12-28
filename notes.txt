@@ -1,0 +1,30 @@
+create a dictionary and use the names, age, key as keys.
+
+# dictionary to store unique pairs
+unique_employees = {}
+
+# loop through and add to dictionary this ensures zero duplicates by overriding data that has been added with newer data
+for employee in employees:
+    key = (employee["department"], employee["name"], employee["age"])
+    unique_employees[key] = employee
+
+# make a list of unique employees
+unique_employee_list = list(unique_employees.values())
+
+# print(unique_employee_list)
+# print(unique_employees)
+
+# get the length of unique values
+total_employees = len(unique_employee_list)
+
+# create an empty pair to store pair values
+employee_pairs = []
+
+# loop through unique values to create a pair
+ for i in range(total_employees):
+     dwarf = unique_employee_list[i]["name"]
+     giant_index = (i + 1) % total_employees  # Circular indexing for pairs
+     giant = unique_employee_list[giant_index]["name"]
+     employee_pairs.append((dwarf, giant))
+
+

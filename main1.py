@@ -1,5 +1,6 @@
 # import multiprocessing
 # import random
+# from itertools import combinations
 #
 # employees = [
 #     {
@@ -539,79 +540,141 @@
 #     }
 # ]
 #
+# # dictionary to store unique pairs
+# unique_employees = {}
 #
-# def remove_duplicates(employee_list):
-#     """Removes duplicate employees from the list."""
-#     unique_employees = []
-#     unique_ids = set()
+# # loop through and add to dictionary this ensures zero duplicates by overriding data that has been added with newer data
+# for employee in employees:
+#     key = (employee["department"], employee["name"], employee["age"])
+#     unique_employees[key] = employee
 #
-#     for emp in employee_list:
-#         emp_id = (emp.get("name"), emp.get("department"), emp.get("age"))
-#         if emp_id not in unique_ids:
-#             unique_employees.append(emp)
-#             unique_ids.add(emp_id)
+# # make a list of unique employees
+# unique_employee_list = list(unique_employees.values())
 #
-#     return unique_employees
+# # print(unique_employee_list)
+# # print(unique_employees)
 #
+# # get the length of unique values
+# total_employees = len(unique_employee_list)
 #
-# def create_employee_pairs(the_employees):
-#     """Creates pairs of dwarfs and giants randomly."""
-#     dwarfs = []
-#     giants = []
-#
-#     for emp in the_employees:
-#         if random.choice([True, False]):
-#             dwarfs.append(emp)
-#         else:
-#             giants.append(emp)
-#
-#     pairs = list(zip(dwarfs, giants))
-#     random.shuffle(pairs)
-#
-#     return pairs
+# # create an empty pair to store pair values
+# employee_pairs = []
 #
 #
-# def generate_unique_pairs(employee_list):
-#     """Generates unique pairs of dwarfs and giants."""
-#     cleaned_employees = remove_duplicates(employee_list)
-#     pairs = create_employee_pairs(cleaned_employees)
-#     unique_pairs = set()
-#
-#     for pair in pairs:
-#         dwarf, giant = pair
-#         pair_id = frozenset([
-#             (dwarf.get("name"), dwarf.get("department"), dwarf.get("age")),
-#             (giant.get("name"), giant.get("department"), giant.get("age"))
-#         ])
-#         unique_pairs.add(pair_id)
-#
-#     final_pairs = []
-#     for pair in unique_pairs:
-#         dwarf_name = next(item[0] for item in pair)
-#         giant_name = next(item[0] for item in pair if item[0] != dwarf_name)
-#         final_pairs.append((dwarf_name, giant_name))
-#
-#     return final_pairs
+# # def create_pairs(chunk, results):
+# #     """Creates unique pairs of employees within a chunk."""
+# #     unique_pairs = []
+# #     total = len(chunk)
+# #
+# #     for i in range(total):
+# #         dwarf = chunk[i]["name"]
+# #         giant_index = (i + 1) % total  # Circular indexing for pairs
+# #         giant = chunk[giant_index]["name"]
+# #         unique_pairs.append((dwarf, giant))
+# #
+# #     results.extend(unique_pairs)
 #
 #
-# def process_chunk(chunk, unique_results):
-#     """Processes chunks of employees to generate unique pairs."""
-#     try:
-#         unique_pairs_chunk = generate_unique_pairs(chunk)
-#         unique_results.extend(unique_pairs_chunk)
-#     except Exception as e:
-#         print(f"Error processing chunk: {e}")
+# # def create_pairs(chunk, results):
+# #     """Creates unique pairs of employees within a chunk."""
+# #     unique_pairs = list(combinations(chunk, 2))
+# #     sorted_unique_pairs = [(min(pair), max(pair)) for pair in unique_pairs]  # Sort pairs alphabetically
+# #     results.extend(sorted_unique_pairs)
 #
+#
+# # def run_multiprocess(my_employees, chunk_size):
+# #     """Runs multiprocessing logic to process employee chunks."""
+# #     processes = []
+# #     unique_results = multiprocessing.Manager().list()
+# #
+# #     chunks = [my_employees[i:i + chunk_size] for i in range(0, len(my_employees), chunk_size)]
+# #
+# #     for chunk in chunks:
+# #         process = multiprocessing.Process(target=create_pairs, args=(chunk, unique_results))
+# #         processes.append(process)
+# #         process.start()
+# #
+# #     for process in processes:
+# #         process.join()
+# #
+# #     return list(unique_results)
+#
+#
+# # loop through unique values to create a pair
+# # for i in range(total_employees):
+# #     dwarf = unique_employee_list[i]["name"]
+# #     giant_index = (i + 1) % total_employees  # Circular indexing for pairs
+# #     giant = unique_employee_list[giant_index]["name"]
+# #     employee_pairs.append((dwarf, giant))
+#
+#
+# # Output the pairs
+# # for pair in employee_pairs:
+# #     print(pair)
+#
+# # def run_multiprocess(my_employees, chunk_size):
+# #     """Runs the multiprocessing logic to process employee chunks."""
+# #     processes = []
+# #     unique_results = multiprocessing.Manager().list()
+# #
+# #     chunks = [my_employees[i:i + chunk_size] for i in range(0, len(my_employees), chunk_size)]
+# #
+# #     for chunk in chunks:
+# #         process = multiprocessing.Process(target=process_chunk, args=(chunk, unique_results))
+# #         processes.append(process)
+# #         process.start()
+# #
+# #     for process in processes:
+# #         process.join()
+# #
+# #     return list(unique_results)
+#
+# # def run_multiprocess(my_employees, chunk_size):
+# #     """Runs multiprocessing logic to process employee chunks."""
+# #     processes = []
+# #     unique_results = multiprocessing.Manager().list()
+# #
+# #     chunks = [my_employees[i:i + chunk_size] for i in range(0, len(my_employees), chunk_size)]
+# #
+# #     for chunk in chunks:
+# #         process = multiprocessing.Process(target=create_pairs, args=(chunk, unique_results))
+# #         processes.append(process)
+# #         process.start()
+# #
+# #     for process in processes:
+# #         process.join()
+# #
+# #     return list(unique_results)
+#
+#
+# def create_pairs(chunk, results, existing_pairs):
+#     """Creates unique pairs of employees within a chunk."""
+#     unique_pairs = []
+#     total_employees = len(chunk)
+#
+#     for i in range(total_employees):
+#         dwarf = chunk[i]["name"]
+#         giant_index = (i + 1) % total_employees  # Circular indexing for pairs
+#         giant = chunk[giant_index]["name"]
+#         new_pair = (dwarf, giant)  # Represent pair as a tuple
+#
+#         # Check if the pair already exists in the results to avoid duplicates
+#         if new_pair not in existing_pairs:
+#             unique_pairs.append(new_pair)
+#             existing_pairs.append(new_pair)
+#
+#     results.extend(unique_pairs)
 #
 # def run_multiprocess(my_employees, chunk_size):
-#     """Runs the multiprocessing logic to process employee chunks."""
+#     """Runs multiprocessing logic to process employee chunks."""
 #     processes = []
 #     unique_results = multiprocessing.Manager().list()
+#     existing_pairs = multiprocessing.Manager().list()
 #
 #     chunks = [my_employees[i:i + chunk_size] for i in range(0, len(my_employees), chunk_size)]
 #
 #     for chunk in chunks:
-#         process = multiprocessing.Process(target=process_chunk, args=(chunk, unique_results))
+#         process = multiprocessing.Process(target=create_pairs, args=(chunk, unique_results, existing_pairs))
 #         processes.append(process)
 #         process.start()
 #
@@ -620,7 +683,6 @@
 #
 #     return list(unique_results)
 #
-#
 # def run():
 #     try:
 #         final_output = run_multiprocess(employees, chunk_size=5)
@@ -628,6 +690,6 @@
 #     except Exception as e:
 #         print("Error during multiprocessing: {}".format(e))
 #
-#
 # if __name__ == "__main__":
 #     run()
+#
