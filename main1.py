@@ -539,54 +539,31 @@ employees = [
 ]
 
 
-def create_pairs(chunk, results, existing_pairs):
-    """Creates unique pairs of employees within a chunk."""
+def generate_unique_pairs(employees):
     unique_pairs = []
-    total_employees = len(chunk)
+    total_employees = len(employees)
 
     for i in range(total_employees):
-        dwarf = chunk[i]["name"]
+        dwarf = employees[i]["name"]
         for j in range(i + 1, total_employees):
-            giant = chunk[j]["name"]
+            giant = employees[j]["name"]
             new_pair = (dwarf, giant)  # Represent pair as a tuple
 
-            # Check if the pair already exists in the results to avoid duplicates
-            if new_pair not in existing_pairs and (new_pair[1], new_pair[0]) not in existing_pairs:
+            # Ensure uniqueness of pairs
+            if new_pair not in unique_pairs and (new_pair[1], new_pair[0]) not in unique_pairs:
                 unique_pairs.append(new_pair)
-                existing_pairs.append(new_pair)
 
-    results.extend(unique_pairs)
-
-
-def run_multiprocess(my_employees, chunk_size):
-    """Runs multiprocessing logic to process employee chunks."""
-    processes = []
-    unique_results = multiprocessing.Manager().list()
-    existing_pairs = multiprocessing.Manager().list()
-
-    chunks = [my_employees[i:i + chunk_size] for i in range(0, len(my_employees), chunk_size)]
-
-    for chunk in chunks:
-        process = multiprocessing.Process(target=create_pairs, args=(chunk, unique_results, existing_pairs))
-        processes.append(process)
-        process.start()
-
-    for process in processes:
-        process.join()
-
-    return list(unique_results)
-
+    return unique_pairs
 
 def run():
     try:
-        final_output = run_multiprocess(employees, chunk_size=2)
+        final_output = generate_unique_pairs(employees)
         # Ensure the last tuple is ('last item', 'first item')
         last_tuple = (final_output[-1][1], final_output[0][0])
         final_output.append(last_tuple)
         print(final_output)
     except Exception as e:
-        print("Error during multiprocessing: {}".format(e))
-
+        print("Error: {}".format(e))
 
 if __name__ == "__main__":
     run()
