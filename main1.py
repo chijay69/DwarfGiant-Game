@@ -538,16 +538,12 @@ employees = [
     }
 ]
 
-
 def generate_unique_pairs(employees):
     unique_pairs = []
-    total_employees = len(employees)
 
-    for i in range(total_employees):
-        dwarf = employees[i]["name"]
-        for j in range(i + 1, total_employees):
-            giant = employees[j]["name"]
-            new_pair = (dwarf, giant)  # Represent pair as a tuple
+    for i, dwarf in enumerate(employees):
+        for j, giant in enumerate(employees[i + 1:], start=i + 1):
+            new_pair = (dwarf["name"], giant["name"])  # Represent pair as a tuple
 
             # Ensure uniqueness of pairs
             if new_pair not in unique_pairs and (new_pair[1], new_pair[0]) not in unique_pairs:
