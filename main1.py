@@ -538,6 +538,7 @@ employees = [
     }
 ]
 
+
 def generate_unique_pairs(employees):
     unique_pairs = []
 
@@ -551,6 +552,7 @@ def generate_unique_pairs(employees):
 
     return unique_pairs
 
+
 def run():
     try:
         final_output = generate_unique_pairs(employees)
@@ -560,6 +562,7 @@ def run():
         print(final_output)
     except Exception as e:
         print("Error: {}".format(e))
+
 
 if __name__ == "__main__":
     run()
